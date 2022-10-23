@@ -4,7 +4,7 @@ const Button = (props) => {
   return (
     <button
       type={props.type}
-      onClick={props.onClick}
+      onClick={(props.onClick) ? props.onClick : null }
     >
       {props.title}
     </button>

@@ -1,23 +1,30 @@
 import React from 'react';
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes, Link, useLocation } from 'react-router-dom';
 import './App.css';
-import Movie from './Component/Movie/Movie';
-import MovieList from './Component/Movie/MovieList';
-import Create from './Component/Create/Create';
+import HomePage from './Pages/HomePage/HomePage';
+import MoviePage from './Pages/MoviePage/MoviePage';
 
 function App() {
+
+  const slug = useLocation().pathname;
+
   return (
     <div className="App">
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-        </ul>
-      </nav>
+      {
+        (slug !== '/') ? (
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+                </li>
+            </ul>
+          </nav>
+        ) : null
+      }
+          
       <Routes>
-        <Route path="/" element={<><Create/><MovieList /></>} />
-        <Route path="/movie/:id"element={<Movie />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/movie/:id" element={<MoviePage />} />
       </Routes>
     </div>
   );
