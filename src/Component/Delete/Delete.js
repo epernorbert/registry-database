@@ -1,20 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Button from '../UI/Button/Button'
 import { db } from '../../firebase'
 import { ref, remove } from 'firebase/database';
+import Modal from '../UI/Modal/Modal';
 
 const Delete = (props) => {
+
+  const [modal, setModal] = useState(false)
 
   const deleteHandler = (uuid) => {
     remove(ref(db, uuid))
   }
 
   return (
-    <Button
-      type={props.type}
-      title={props.title}
-      onClick={() => deleteHandler(props.uuid)}
-    />
+    <>
+      {modal && (
+        <Modal title='Are you sure?'>
+          <Button
+            title='Yes, delete'
+            className='btn-red'
+            onClick={() => deleteHandler(props.uuid)}
+          />
+          <Button
+            title='Cancel'
+            className='btn-green'
+            onClick={() => setModal(false)}
+          />
+        </Modal>
+      )}
+      <Button
+        className={props.className}
+        type={props.type}
+        title={props.title}
+        onClick={() => setModal(true)}
+      />
+    </>
   )
 }
 

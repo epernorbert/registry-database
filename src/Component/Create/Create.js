@@ -6,7 +6,7 @@ import Input from '../Input/Input'
 import Button from '../UI/Button/Button'
 import TextArea from '../TextArea/TextArea';
 
-const Create = () => {
+const Create = (props) => {
 
   const [title, setTitle] = useState("")
   const [ratingSystem, setRatingSystem] = useState("")
@@ -40,32 +40,44 @@ const Create = () => {
   }
 
   return (
-    <form onSubmit={submitHandler}>
-      <Input
-        title="Movie title"
-        type="text"
-        name="title"
-        onChange={titleChangeHander}
-        value={title}
-      />
-      <Input
-        title="Rating system"
-        type="text"
-        name="rating"
-        onChange={ratingChangeHandler}
-        value={ratingSystem}
-      />
+    <form onSubmit={submitHandler} className="flex items-center justify-center flex-col gap-2">
+      <div className='flex gap-7 content-center'>
+        <Input
+          title="Movie title"
+          type="text"
+          name="title"
+          onChange={titleChangeHander}
+          value={title}
+        />
+        <Input
+          title="Rating system"
+          type="text"
+          name="rating"
+          onChange={ratingChangeHandler}
+          value={ratingSystem}
+        />
+      </div>
       <TextArea
+        className="flex items-center"
         title="Description"
         type="text"
         name="description"
         onChange={descriptionHandler}
         value={description}
       />
-      <Button
-        title="Add new movie"
-        type="submit"
-      />
+      <div className='flex mt-4 w-full gap-5'>
+        <Button
+          title="Add new movie"
+          type="submit"
+          className="btn-green w-[50%]"
+        />
+        <Button
+          title="Close"
+          type="submit"
+          className="btn-red w-[50%]"
+          onClick={props.onClick}
+        />
+      </div>
     </form>
   )
 }

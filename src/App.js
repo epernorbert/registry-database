@@ -9,13 +9,13 @@ function App() {
   const slug = useLocation().pathname;
 
   return (
-    <div className="App">
+    <div className="App m-auto primary-text-color max-w-4xl box-border">
       {
         (slug !== '/') ? (
           <nav>
             <ul>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/" className='theme-color'>Home</Link>
                 </li>
             </ul>
           </nav>

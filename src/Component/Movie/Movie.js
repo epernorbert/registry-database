@@ -70,7 +70,7 @@ const Movie = () => {
             /> 
           </form>
         ) : (
-          <>
+          <div className='theme-color'>
             <h1>{movie.title}</h1>
             <h2>{movie.ratingSystem}</h2>
             <p>{movie.description}</p>
@@ -79,7 +79,7 @@ const Movie = () => {
               title="Edit"
               onClick={editHandler}
             />   
-          </>
+          </div>
         )
       }
     </>
