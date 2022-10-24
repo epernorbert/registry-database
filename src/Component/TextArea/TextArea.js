@@ -10,6 +10,7 @@ const TextArea = (props) => {
         name={props.name}
         onChange={props.onChange}
         value={props.value}
+        maxLength="200"
         required />
     </div>
   )

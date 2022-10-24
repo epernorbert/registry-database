@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Input = (props) => {
-  console.log(props.maxLength);
   return (
     <div className={props.className + ' ' + 'flex flex-col'}>
       {props.title && <label className='mb-1 text-left'>{props.title}</label>}
@@ -13,6 +12,7 @@ const Input = (props) => {
         value={props.value}
         placeholder={props.placeholder}
         max={props.max}
+        maxLength="50"
         required />
     </div>
   )

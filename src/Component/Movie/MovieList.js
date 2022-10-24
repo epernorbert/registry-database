@@ -17,7 +17,6 @@ const MovieList = (props) => {
     onValue(ref(db), snapshop => {
       setMovies([])
       const data = snapshop.val();
-      //console.log(Object.keys(data)); // return object keys(uuid)
       if(data !== null){
         Object.values(data).map(movie => {
           return setMovies(oldArray => [...oldArray, movie])
@@ -36,19 +35,8 @@ const MovieList = (props) => {
   }
 
   const filteredMovies = movies.filter(item => {
-    return item.ratingSystem <= filterTo;
+    return +item.ratingSystem <= +filterTo;
   });
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log('VALITY CHECK');
-    }, 1000);
-
-    return () => {
-      console.log('CLEAN UP');
-      clearTimeout(timer)
-    }
-  }, [filterTo])
 
   return (
     <>
@@ -57,9 +45,9 @@ const MovieList = (props) => {
           <label className='secondary-text-color pr-1'>Age filter:</label>
           <Input
             onChange={onFilterTo}
-            placeholder='To'
+            placeholder='Your age'
             type='number'
-            className='border w-[70px]'
+            className='border w-[75px]'
             value={num}
           />
         </div>
@@ -69,14 +57,20 @@ const MovieList = (props) => {
           onClick={props.setModal}
         />
       </div>
-      <div className='theme-color'>
-        <div className='theme-color flex pt-2 items-center'>
+      <div className='theme-color shadow-xl'>
+        <div className='theme-color flex py-2 items-center'>
           <p className='w-[50%] font-bold'>Title</p>
           <p className='ml-auto pr-[60px] font-bold'>Actions</p>
         </div>
-        {filteredMovies.map((movie) => {
+        {
+          filteredMovies.length === 0 ? (
+            <div className="flex gap-3 py-4 border-t items-center theme-color">
+              <h1 className='w-full'>No data found</h1>
+            </div>
+            ) : (
+          filteredMovies.map((movie) => {
           return(
-            <div key={movie.uuid} className="flex gap-3 my-2 py-2 border-t items-center theme-color">
+            <div key={movie.uuid} className="flex gap-3 py-3 border-t items-center theme-color">
               <h1 className='w-[50%]'>{movie.title}</h1>
               <Link to={`/movie/${movie.uuid}`} className="ml-auto" >
                 <Button
@@ -90,8 +84,8 @@ const MovieList = (props) => {
                 uuid={movie.uuid}
               />
             </div>
-            )
-        })}
+          )
+        }))}
       </div>
     </>
   )

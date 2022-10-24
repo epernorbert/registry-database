@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  --bg: #FCFAF8;
   --theme-color: #343A40;
   --primary-text-color: #f1faee;
   --secondary-text-color: #343A40;
@@ -11,8 +12,15 @@
   --btn-red: #E3342F;
   --btn-green: #25C167;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
 body{
-  background: #FCFAF8;
+  background: var(--bg);
+}
+.bg{
+  background: var(--bg);
 }
 .theme-color {
   background: var(--theme-color);
