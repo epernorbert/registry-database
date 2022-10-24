@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Create from '../../Component/Create/Create'
 import MovieList from '../../Component/Movie/MovieList'
 import Modal from '../../Component/UI/Modal/Modal'
-import Button from '../../Component/UI/Button/Button'
 
 const HomePage = () => {
 
@@ -18,14 +17,7 @@ const HomePage = () => {
           <Create onClick={() => setModal(!modal)} />
         </Modal>
       )}
-      <div className='text-right'>
-        <Button
-          className='btn-green mb-1'
-          title="Add new movie"
-          onClick={() => setModal(!modal)}
-        />
-      </div>
-      <MovieList />
+      <MovieList setModal={() => setModal(!modal)} />
     </>
   )
 }

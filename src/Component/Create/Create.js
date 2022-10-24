@@ -51,14 +51,15 @@ const Create = (props) => {
         />
         <Input
           title="Rating system"
-          type="text"
+          type="number"
           name="rating"
           onChange={ratingChangeHandler}
           value={ratingSystem}
+          max='18'
         />
       </div>
       <TextArea
-        className="flex items-center"
+        className="flex items-center h-[140px]"
         title="Description"
         type="text"
         name="description"

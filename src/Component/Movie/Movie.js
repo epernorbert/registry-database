@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { db } from '../../firebase';
 import { ref, onValue, update } from 'firebase/database';
 import React, { useEffect, useState } from 'react';
@@ -56,30 +56,65 @@ const Movie = () => {
       {
         isEdit ? (
           <form onSubmit={handleUpdate}>
-            <Input type="text" value={title} name="title" onChange={titleChangeHander} />
-            <Input type="text" value={ratingSystem} name="rating" onChange={ratingChangeHandler} />
-            <TextArea type="text" value={description} name="description" onChange={descriptionHandler} /> 
-            <Button
-              type="submit"
-              title="Save"
-            /> 
-            <Button
-              type="submit"
-              title="Cancel"
-              onClick={() => setIsEdit(false)}
-            /> 
+            <header className='secondary-text-color mb-12 mt-4 text-3xl font-semibold border'>
+              <Input type="text" value={title} name="title" onChange={titleChangeHander} />
+            </header>
+            <div className='theme-color mt-8'>
+              <div className='theme-color flex p-2 items-center'>
+                <div className='w-[60%] font-bold'>Description</div>
+                <div className='w-[20%] font-bold'>Age rating</div>
+                <div className='w-[20%] font-bold'>Action</div> 
+              </div>
+              <div className='theme-color flex pt-2 items-center my-2 p-2 border-t items-center'>
+                <div className='w-[60%] text-left'>
+                  <TextArea type="text" value={description} name="description" onChange={descriptionHandler} /> 
+                </div>
+                <div className='w-[20%]'>
+                  <Input type="text" value={ratingSystem} name="rating" className="max-w-[30%] mx-auto" onChange={ratingChangeHandler} />
+                </div>
+                <div className='w-[20%] flex justify-evenly'>
+                  <Button
+                    className="btn-red"
+                    title="Save"
+                  /> 
+                  <Button
+                    className="btn-green"
+                    title="Cancel"
+                    onClick={() => setIsEdit(false)}
+                  /> 
+                </div> 
+              </div>
+            </div> 
           </form>
         ) : (
-          <div className='theme-color'>
-            <h1>{movie.title}</h1>
-            <h2>{movie.ratingSystem}</h2>
-            <p>{movie.description}</p>
-            <Button
-              type="submit"
-              title="Edit"
-              onClick={editHandler}
-            />   
-          </div>
+          <>
+            <header className='secondary-text-color my-5 text-3xl font-semibold'>
+              <h1>{movie.title}</h1>
+            </header>
+              <div className='text-right mb-1'>
+                <Button className='btn-green'>
+                  <Link to="/">Home</Link>
+                </Button>
+              </div>
+              <div className='theme-color'>
+                <div className='theme-color flex p-2 items-center'>
+                  <p className='w-[60%] font-bold'>Description</p>
+                  <p className='w-[20%] font-bold'>Age rating</p>
+                  <p className='w-[20%] font-bold'>Action</p> 
+                </div>
+                <div className='theme-color flex pt-2 items-center my-2 p-2 border-t items-center'>
+                  <p className='w-[60%] text-left'>{movie.description}</p>
+                  <p className='w-[20%]'>{movie.ratingSystem}</p>
+                  <p className='w-[20%]'>
+                    <Button
+                      className="btn-blue"
+                      title="Edit"
+                      onClick={editHandler}
+                    />  
+                  </p> 
+                </div>                
+            </div>
+          </>
         )
       }
     </>

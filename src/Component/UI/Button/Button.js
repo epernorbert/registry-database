@@ -8,6 +8,7 @@ const Button = (props) => {
       onClick={(props.onClick) ? props.onClick : null }
     >
       {props.title}
+      {props.children}
     </button>
   )
 }
