@@ -10,9 +10,9 @@ const MovieList = (props) => {
   
   const [movies, setMovies] = useState([]);
   const [filterTo, setFilterTo] = useState(18)
-  const [num, setNum] = useState('');
+  const [num, setNum] = useState(''); // number input field maxlength
 
-  // read
+  // read from database
   useEffect(() => {
     onValue(ref(db), snapshop => {
       setMovies([])
@@ -25,6 +25,7 @@ const MovieList = (props) => {
     })
   }, [])
 
+  // listen to filter input change
   const onFilterTo = e => {
     setFilterTo(e.target.value);
     if(e.target.value === ''){

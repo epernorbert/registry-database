@@ -8,6 +8,7 @@ const Delete = (props) => {
 
   const [modal, setModal] = useState(false)
 
+  // get selected ID param and remove from database
   const deleteHandler = (uuid) => {
     remove(ref(db, uuid))
   }
