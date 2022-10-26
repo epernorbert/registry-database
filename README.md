@@ -1,5 +1,5 @@
 
-# React CRUD application with firestore
+# React CRUD application with firebase
 
 
 
