@@ -16,7 +16,7 @@ const Movie = () => {
   const [update, setUpdate] = useState(false)
   const key = useContext(KeyContext)
 
-  // read from database
+  // read API
   useEffect(() => {
     fetch(`https://crudcrud.com/api/${key.key}/movie/${id}`)
       .then((response) => {
