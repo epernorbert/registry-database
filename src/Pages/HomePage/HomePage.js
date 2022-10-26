@@ -6,6 +6,11 @@ import Modal from '../../Component/UI/Modal/Modal'
 const HomePage = () => {
 
   const [modal, setModal] = useState(false)
+  const [update, setUpdate] = useState(false)
+
+  const handleUpdate = () => {
+    setUpdate(!update);
+  }
 
   return (
     <>
@@ -14,10 +19,10 @@ const HomePage = () => {
       </header>
       {(modal) && (
         <Modal title="Add new movie">
-          <Create onClick={() => setModal(!modal)} />
+          <Create onClick={() => setModal(!modal)} triggerUpdate={handleUpdate}  />
         </Modal>
       )}
-      <MovieList setModal={() => setModal(!modal)} />
+      <MovieList setModal={() => setModal(!modal)} update={update} />
     </>
   )
 }

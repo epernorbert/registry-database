@@ -1,10 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
-import { db } from '../../firebase';
-import { ref, onValue, update } from 'firebase/database';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Button from '../UI/Button/Button';
 import Input from '../Input/Input';
 import TextArea from '../TextArea/TextArea';
+import KeyContext from '../Context/keyContextProvider';
 
 const Movie = () => {
   const {id} = useParams(); 
@@ -13,16 +12,25 @@ const Movie = () => {
   const [title, setTitle] = useState("")
   const [ratingSystem, setRatingSystem] = useState("")
   const [description, setDescription] = useState("")
+  const [uuid, setUuid] = useState("")
+  const [update, setUpdate] = useState(false)
+  const key = useContext(KeyContext)
 
   // read from database
   useEffect(() => {
-    onValue(ref(db, id), snapshot => {
-      setTitle(snapshot.val().title)
-      setRatingSystem(snapshot.val().ratingSystem)
-      setDescription(snapshot.val().description)
-      setMovie(snapshot.val())
-    })
-  }, [id])
+    fetch(`https://crudcrud.com/api/${key.key}/movie/${id}`)
+      .then((response) => {
+        return response.json();      
+      })
+      .then((data) => {
+        setTitle(data.title)
+        setRatingSystem(data.ratingSystem)
+        setDescription(data.description)
+        setUuid(data.uuid)
+        setMovie(data)
+      })
+
+  }, [id, update])
 
   const editHandler = () => {
     setIsEdit(true)
@@ -40,16 +48,22 @@ const Movie = () => {
     setDescription(event.target.value)
   }
 
-  // update in database
+  // update API
   const handleUpdate = (e) => {
     e.preventDefault()
-    update(ref(db, id),{
-      uuid : id,
-      title,
-      ratingSystem,
-      description
-    })
-    setIsEdit(false)
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        uuid: uuid,
+        title: title,
+        ratingSystem: ratingSystem,
+        description: description
+        })
+      };
+      fetch(`https://crudcrud.com/api/${key.key}/movie/${id}`, requestOptions)
+        .then(() => setUpdate(!update))
+        .then(() => setIsEdit(false))
   }
 
   return (

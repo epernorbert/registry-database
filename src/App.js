@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import HomePage from './Pages/HomePage/HomePage';
 import MoviePage from './Pages/MoviePage/MoviePage';
+import KeyContext from './Component/Context/keyContextProvider';
+
 
 function App() {
+
   return (
     <div className="App m-auto primary-text-color max-w-4xl box-border">
       <Routes>

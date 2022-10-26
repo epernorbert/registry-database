@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-import { db } from '../../firebase';
+import React, { useState, useContext } from 'react'
 import { uid } from 'uid';
-import { set, ref } from 'firebase/database';
 import Input from '../Input/Input'
 import Button from '../UI/Button/Button'
 import TextArea from '../TextArea/TextArea';
+import KeyContext from '../Context/keyContextProvider';
 
 const Create = (props) => {
 
   const [title, setTitle] = useState("")
   const [ratingSystem, setRatingSystem] = useState("")
   const [description, setDescription] = useState("")
+  const key = useContext(KeyContext)
 
   const titleChangeHander = event => {
     setTitle(event.target.value);
@@ -24,16 +24,24 @@ const Create = (props) => {
     setDescription(event.target.value)
   }
     
-  // store in database
+  // store API
   const submitHandler = event => {
     event.preventDefault();
     const uuid = uid();
-    set(ref(db, uuid), {
-      uuid,
-      title,
-      ratingSystem,
-      description
-    })
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        uuid: uuid,
+        title: title,
+        ratingSystem: ratingSystem,
+        description: description
+        })
+      };
+      fetch(`https://crudcrud.com/api/${key.key}/movie`, requestOptions)
+        .then(response => response.json())
+        .then(props.triggerUpdate)
+
     setTitle("");
     setRatingSystem("");
     setDescription("");

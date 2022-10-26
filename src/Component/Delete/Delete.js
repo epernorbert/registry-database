@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Button from '../UI/Button/Button'
-import { db } from '../../firebase'
-import { ref, remove } from 'firebase/database';
 import Modal from '../UI/Modal/Modal';
+import KeyContext from '../Context/keyContextProvider';
 
+// delete API
 const Delete = (props) => {
 
   const [modal, setModal] = useState(false)
+  const key = useContext(KeyContext)
 
   // get selected ID param and remove from database
-  const deleteHandler = (uuid) => {
-    remove(ref(db, uuid))
+  const deleteHandler = (id) => {
+    fetch(`https://crudcrud.com/api/${key.key}/movie/${id}`,
+      { method: 'DELETE' })
+      .then(props.update)
   }
 
   return (

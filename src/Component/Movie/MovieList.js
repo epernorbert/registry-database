@@ -1,29 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import { db } from '../../firebase';
-import { onValue, ref } from 'firebase/database';
+import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
 import Delete from '../Delete/Delete';
 import Button from '../UI/Button/Button';
 import Input from '../Input/Input';
+import KeyContext from '../Context/keyContextProvider';
 
 const MovieList = (props) => {
   
   const [movies, setMovies] = useState([]);
   const [filterTo, setFilterTo] = useState(18)
   const [num, setNum] = useState(''); // number input field maxlength
+  const [update, setUpdate] = useState(false)
+  const key = useContext(KeyContext)
 
-  // read from database
+  const handleUpdate = () => {
+    setUpdate(!update);
+  }
+
+  // read API
   useEffect(() => {
-    onValue(ref(db), snapshop => {
-      setMovies([])
-      const data = snapshop.val();
-      if(data !== null){
-        Object.values(data).map(movie => {
-          return setMovies(oldArray => [...oldArray, movie])
-        })
-      }
-    })
-  }, [])
+    fetch(`https://crudcrud.com/api/${key.key}/movie`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setMovies([...data])
+      })
+      
+  }, [props.update, update])
 
   // listen to filter input change
   const onFilterTo = e => {
@@ -73,7 +77,7 @@ const MovieList = (props) => {
           return(
             <div key={movie.uuid} className="flex gap-3 py-3 border-t items-center theme-color">
               <h1 className='w-[50%]'>{movie.title}</h1>
-              <Link to={`/movie/${movie.uuid}`} className="ml-auto" >
+              <Link to={`/movie/${movie._id}`} className="ml-auto" >
                 <Button
                   className="btn-blue"
                   title="View"
@@ -82,7 +86,8 @@ const MovieList = (props) => {
               <Delete
                 className="btn-red mr-5"
                 title="Delete"
-                uuid={movie.uuid}
+                uuid={movie._id}
+                update={handleUpdate}
               />
             </div>
           )
