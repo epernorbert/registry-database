@@ -15,7 +15,7 @@ const HomePage = () => {
   return (
     <>
       <header className='secondary-text-color my-5 text-3xl font-semibold'>
-        <h1>All movie in database</h1>
+        <h1>All stored movie</h1>
       </header>
       {(modal) && (
         <Modal title="Add new movie">
