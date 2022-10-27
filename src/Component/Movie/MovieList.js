@@ -12,6 +12,7 @@ const MovieList = (props) => {
   const [num, setNum] = useState(''); // number input field maxlength
   const [update, setUpdate] = useState(false)
   const key = useContext(KeyContext)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleUpdate = () => {
     setUpdate(!update);
@@ -19,14 +20,17 @@ const MovieList = (props) => {
 
   // read API
   useEffect(() => {
+    setIsLoading(true)
     fetch(`https://crudcrud.com/api/${key.key}/movie`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setMovies([...data])
-      })
-      
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      setMovies([...data])
+    })
+    .then(() => {
+      setIsLoading(false)  
+    })
   }, [props.update, update])
 
   // listen to filter input change
@@ -67,14 +71,18 @@ const MovieList = (props) => {
           <p className='w-[50%] font-bold'>Title</p>
           <p className='ml-auto pr-[60px] font-bold'>Actions</p>
         </div>
-        {
-          filteredMovies.length === 0 ? (
-            <div className="flex gap-3 py-4 border-t items-center theme-color">
-              <h1 className='w-full'>No data found</h1>
-            </div>
-            ) : (
-          filteredMovies.map((movie) => {
-          return(
+        {isLoading && 
+          <div className="flex gap-3 py-4 border-t items-center theme-color">
+            <h1 className='w-full'>Loadin...</h1>
+          </div>
+        }
+        {filteredMovies.length === 0 && !isLoading &&  
+          <div className="flex gap-3 py-4 border-t items-center theme-color">
+            <h1 className='w-full'>No data found</h1>
+          </div>
+        }
+        {!isLoading && filteredMovies.map((movie) => {
+          return( 
             <div key={movie.uuid} className="flex gap-3 py-3 border-t items-center theme-color">
               <h1 className='w-[50%]'>{movie.title}</h1>
               <Link to={`/movie/${movie._id}`} className="ml-auto" >
@@ -90,8 +98,9 @@ const MovieList = (props) => {
                 update={handleUpdate}
               />
             </div>
-          )
-        }))}
+            )
+          })
+        }
       </div>
     </>
   )
