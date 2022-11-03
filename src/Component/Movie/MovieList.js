@@ -13,6 +13,7 @@ const MovieList = (props) => {
   const [update, setUpdate] = useState(false)
   const key = useContext(KeyContext)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleUpdate = () => {
     setUpdate(!update);
@@ -20,18 +21,20 @@ const MovieList = (props) => {
 
   // read API
   useEffect(() => {
-    setIsLoading(true)
-    fetch(`https://crudcrud.com/api/${key.key}/movie`)
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      setMovies([...data])
-    })
-    .then(() => {
-      setIsLoading(false)  
-    })
-  }, [props.update, update])
+    (async () => {
+      try {
+        setIsLoading(true)
+        setError('')
+        const response = await fetch(`https://crudcrud.com/api/${key.key}/movie`)
+        const data = await response.json()
+        setMovies([...data])
+        setIsLoading(false)  
+      } catch (e) {
+        setIsLoading(false)
+        setError(e.message)
+      }
+    })()
+  }, [props.update, update, key.key])
 
   // listen to filter input change
   const onFilterTo = e => {
@@ -71,12 +74,17 @@ const MovieList = (props) => {
           <p className='w-[50%] font-bold'>Title</p>
           <p className='ml-auto pr-[60px] font-bold'>Actions</p>
         </div>
+        {error.length > 0 && !isLoading && 
+          <div className="flex gap-3 py-4 border-t items-center theme-color">
+            <h1 className='w-full'>{error}</h1>
+          </div>
+        }
         {isLoading && 
           <div className="flex gap-3 py-4 border-t items-center theme-color">
             <h1 className='w-full'>Loadin...</h1>
           </div>
         }
-        {filteredMovies.length === 0 && !isLoading &&  
+        {filteredMovies.length === 0 && !isLoading && error.length === 0 &&  
           <div className="flex gap-3 py-4 border-t items-center theme-color">
             <h1 className='w-full'>No data found</h1>
           </div>
