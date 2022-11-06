@@ -19,21 +19,23 @@ const MovieList = (props) => {
     setUpdate(!update);
   }
 
+  const fetchData = async () => {
+    try {
+      setIsLoading(true)
+      setError('')
+      const response = await fetch(`https://crudcrud.com/api/${key.key}/movie`)
+      const data = await response.json()
+      setMovies([...data])
+      setIsLoading(false)  
+    } catch (e) {
+      setIsLoading(false)
+      setError(e.message)
+    }
+  }
+
   // read API
   useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true)
-        setError('')
-        const response = await fetch(`https://crudcrud.com/api/${key.key}/movie`)
-        const data = await response.json()
-        setMovies([...data])
-        setIsLoading(false)  
-      } catch (e) {
-        setIsLoading(false)
-        setError(e.message)
-      }
-    })()
+    fetchData()
   }, [props.update, update, key.key])
 
   // listen to filter input change
